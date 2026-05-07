@@ -1,7 +1,7 @@
 variable "bucket_name" {
   description = "The name of the S3 bucket for the frontend"
   type        = string
-  default     = "makimaki19511951"
+  default     = "maki-frontend-dev"
 }
 
 variable "cloudfront_arn" {
