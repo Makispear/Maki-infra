@@ -9,6 +9,13 @@ terraform {
       version = "~> 6.0"
     }
   }
+  backend "s3" {
+    bucket         = "maki-terraform-state-storage"
+    key            = "dev/terraform.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+    dynamodb_table = "terraform-lock-table"
+  }
 }
 
 provider "aws" {
