@@ -10,7 +10,7 @@ terraform {
     }
   }
   backend "s3" {
-    bucket  = "maki-terraform-state-storage"
+    bucket  = "maki-terraform-state-storage-portfolio"
     key     = "dev/terraform.tfstate"
     region  = "us-east-1"
     encrypt = true
