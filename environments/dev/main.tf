@@ -1,6 +1,6 @@
 module "s3" {
   source         = "../../modules/s3"
-  bucket_name    = "maki-frontend-dev"
+  bucket_name    = "maki-portfolio-dev"
   cloudfront_arn = module.cloudfront.cloudfront_arn
 }
 
@@ -16,10 +16,10 @@ resource "github_repository_environment" "develop" {
 }
 
 resource "github_actions_environment_secret" "cloudfront_id_secret" {
-  repository      = "Maki-Maki"
-  environment     = github_repository_environment.develop.environment
-  secret_name     = "CLOUDFRONT_DIST_ID"
-  plaintext_value = module.cloudfront.distribution_id
+  repository  = "Maki-Maki"
+  environment = github_repository_environment.develop.environment
+  secret_name = "CLOUDFRONT_DIST_ID"
+  value       = module.cloudfront.distribution_id
 }
 
 resource "github_actions_environment_variable" "s3_bucket_var" {
