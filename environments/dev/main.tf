@@ -28,3 +28,19 @@ resource "github_actions_environment_variable" "s3_bucket_var" {
   variable_name = "S3_BUCKET_NAME"
   value         = module.s3.bucket_name
 }
+
+# This syncs your Access Key ID
+resource "github_actions_environment_secret" "aws_key" {
+  repository  = "Maki-Maki"
+  environment = "develop"
+  secret_name = "AWS_ACCESS_KEY_ID"
+  value       = var.aws_access_key_id
+}
+
+# This syncs your Secret Access Key
+resource "github_actions_environment_secret" "aws_secret" {
+  repository  = "Maki-Maki"
+  environment = "develop"
+  secret_name = "AWS_SECRET_ACCESS_KEY"
+  value       = var.aws_secret_access_key
+}
