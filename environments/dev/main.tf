@@ -1,6 +1,6 @@
 module "s3" {
   source         = "../../modules/s3"
-  bucket_name    = "maki-frontend-dev"
+  bucket_name    = "maki-portfolio-dev"
   cloudfront_arn = module.cloudfront.cloudfront_arn
 }
 
