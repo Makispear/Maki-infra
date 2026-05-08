@@ -2,17 +2,28 @@ name: Infrastructure Deployment
 
 on:
   push:
-    branches:
-      - develop  
+    branches: [ develop ]
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Choose action: apply or destroy'
+        required: true
+        default: 'apply' # This makes 'apply' the default in the UI
+        type: choice
+        options:
+          - apply
+          - destroy
 
 jobs:
-  terraform-apply:
+  terraform-operation:
     runs-on: ubuntu-latest
     environment: develop
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_DEFAULT_REGION: 'us-east-1'
+      TF_VAR_github_token: ${{ secrets.GH_PAT }}
+    
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -24,16 +35,15 @@ jobs:
         run: terraform init
         working-directory: ./environments/dev 
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+      - name: Terraform Action (Apply or Destroy)
+        run: terraform ${{ github.event.inputs.action || 'apply' }} -auto-approve
         working-directory: ./environments/dev
-        env:
-          TF_VAR_github_token: ${{ secrets.GH_PAT }}
 
       - name: Trigger Frontend Deploy
+        if: github.event.inputs.action != 'destroy'
         run: |
           curl -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.GH_PAT }}" \
-            https://api.github.com/repos/Maki-Maki/Maki-Maki/dispatches \
+            https://api.github.com/repos/Makispear/Maki-Maki/dispatches \
             -d '{"event_type": "infra_updated"}'

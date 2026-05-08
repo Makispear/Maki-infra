@@ -16,10 +16,10 @@ resource "github_repository_environment" "develop" {
 }
 
 resource "github_actions_environment_secret" "cloudfront_id_secret" {
-  repository      = "Maki-Maki"
-  environment     = github_repository_environment.develop.environment
-  secret_name     = "CLOUDFRONT_DIST_ID"
-  plaintext_value = module.cloudfront.distribution_id
+  repository  = "Maki-Maki"
+  environment = github_repository_environment.develop.environment
+  secret_name = "CLOUDFRONT_DIST_ID"
+  value       = module.cloudfront.distribution_id
 }
 
 resource "github_actions_environment_variable" "s3_bucket_var" {
